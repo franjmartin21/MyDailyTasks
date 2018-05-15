@@ -1,4 +1,4 @@
-package franjmartin21.com.mydailytasks.activity;
+package com.franjmartin21.mydailytasks.activity;
 
 import android.support.test.rule.ActivityTestRule;
 

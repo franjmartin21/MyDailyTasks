@@ -1,4 +1,4 @@
-package franjmartin21.com.mydailytasks.activity;
+package com.franjmartin21.mydailytasks.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,7 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import franjmartin21.com.mydailytasks.R;
+import com.franjmartin21.mydailytasks.R;
+import com.franjmartin21.mydailytasks.data.db.MyDailyTasksDatabase;
 
 public class DailyTasksActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +22,7 @@ public class DailyTasksActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyDailyTasksDatabase db = MyDailyTasksDatabase.getAppDatabase(this);
         setContentView(R.layout.activity_daily_tasks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
