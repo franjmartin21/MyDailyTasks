@@ -1,4 +1,4 @@
-package franjmartin21.com.mydailytasks;
+package com.franjmartin21.mydailytasks;
 
 import org.junit.Test;
 

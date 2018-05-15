@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/daily_task_list_fragment"
-        android:name="franjmartin21.com.mydailytasks.DailyTaskListFragment"
+        android:name="com.franjmartin21.mydailytasks.activity.DailyTaskListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

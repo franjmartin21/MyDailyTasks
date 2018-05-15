@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="franjmartin21.com.mydailytasks">
+    package="com.franjmartin21.mydailytasks">
 
     <application
         android:allowBackup="true"
