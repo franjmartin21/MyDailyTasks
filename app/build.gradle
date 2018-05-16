@@ -4,10 +4,11 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.franjmartin21.mydailytasks"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {

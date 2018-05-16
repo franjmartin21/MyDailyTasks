@@ -3,22 +3,16 @@ package com.franjmartin21.mydailytasks.activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.franjmartin21.mydailytasks.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DailyTaskListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DailyTaskListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DailyTaskListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +22,8 @@ public class DailyTaskListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FloatingActionButton mAddTaskToList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,7 +62,15 @@ public class DailyTaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_daily_task_list, container, false);
+        View v = inflater.inflate(R.layout.fragment_daily_task_list, container, false);
+        mAddTaskToList = v.findViewById(R.id.btn_add_task_to_list);
+        mAddTaskToList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(DailyTaskListFragment.this.getContext(), "click button", Toast.LENGTH_LONG).show();
+            }
+        });
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

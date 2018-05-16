@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MyDailyTasks</string>
     <!-- Titles for different screens-->
+    <string name="daily_task_title">Tasks</string>
 
 
 
