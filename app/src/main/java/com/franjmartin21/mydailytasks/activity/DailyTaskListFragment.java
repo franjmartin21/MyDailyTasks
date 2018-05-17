@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +15,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.franjmartin21.mydailytasks.R;
+import com.franjmartin21.mydailytasks.activity.adapter.DailyTaskAdapter;
+import com.franjmartin21.mydailytasks.data.dao.TaskOcurrenceDao;
+import com.franjmartin21.mydailytasks.data.entity.TaskOcurrenceItem;
 
-public class DailyTaskListFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.ListItemClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -23,7 +32,10 @@ public class DailyTaskListFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    //List of components in the page
     private FloatingActionButton mAddTaskToList;
+    private RecyclerView mListTasks;
+    private DailyTaskAdapter mDailyTaskAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,6 +75,7 @@ public class DailyTaskListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_daily_task_list, container, false);
+        mListTasks = v.findViewById(R.id.rv_list_tasks);
         mAddTaskToList = v.findViewById(R.id.btn_add_task_to_list);
         mAddTaskToList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +83,31 @@ public class DailyTaskListFragment extends Fragment {
                 Toast.makeText(DailyTaskListFragment.this.getContext(), "click button", Toast.LENGTH_LONG).show();
             }
         });
+
+        addRecyclerViewSetup(v);
         return v;
+    }
+
+    private void addRecyclerViewSetup(View v) {
+        mListTasks = v.findViewById(R.id.rv_list_tasks);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        mListTasks.setLayoutManager(layoutManager);
+        mDailyTaskAdapter = new DailyTaskAdapter(getDummyData(), this);
+        DividerItemDecoration dividerItemDecorationAssessment = new DividerItemDecoration(mListTasks.getContext(),DividerItemDecoration.VERTICAL);
+        mListTasks.addItemDecoration(dividerItemDecorationAssessment);
+        mListTasks.setAdapter(mDailyTaskAdapter);
+        mListTasks.setHasFixedSize(true);
+    }
+
+    private List<TaskOcurrenceItem> getDummyData(){
+        TaskOcurrenceItem taskOcurrenceItem = new TaskOcurrenceItem();
+        taskOcurrenceItem.setTitle("This is my dummy data for the first task");
+        TaskOcurrenceItem taskOcurrenceItem2 = new TaskOcurrenceItem();
+        taskOcurrenceItem2.setTitle("This is my second dummy data for the first task and I want this one to be longer in size");
+        List<TaskOcurrenceItem> taskOcurrenceItemList = new ArrayList<>();
+        taskOcurrenceItemList.add(taskOcurrenceItem);
+        taskOcurrenceItemList.add(taskOcurrenceItem2);
+        return taskOcurrenceItemList;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -98,6 +135,17 @@ public class DailyTaskListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    @Override
+    public void onListItemClick(int termId) {
+
+    }
+
+    @Override
+    public void onListItemClickCheckBox(int termId) {
+
     }
 
     /**

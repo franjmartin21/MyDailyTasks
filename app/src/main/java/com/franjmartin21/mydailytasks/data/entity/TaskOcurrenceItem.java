@@ -12,6 +12,8 @@ public class TaskOcurrenceItem {
 
     private Date completedDate;
 
+    private int position;
+
     public String getTitle() {
         return title;
     }
@@ -34,5 +36,13 @@ public class TaskOcurrenceItem {
 
     public void setCompletedDate(Date completedDate) {
         this.completedDate = completedDate;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

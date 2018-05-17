@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface TaskOcurrenceDao {
 
-    @Query("SELECT t.title title, o.completedDate completedDate, o.goalDate goalDate FROM Task t, TaskOcurrence o WHERE t.id = o.taskId and goalDate between :startDate and :endDate")
+    @Query("SELECT t.title title, o.completedDate completedDate, o.goalDate goalDate, o.position position FROM Task t, TaskOcurrence o WHERE t.id = o.taskId and goalDate between :startDate and :endDate")
     public List<TaskOcurrenceItem> loadTaskOcurrencesForDateRange(Date startDate, Date endDate);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

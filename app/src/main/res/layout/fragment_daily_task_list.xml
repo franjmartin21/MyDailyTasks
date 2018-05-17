@@ -12,7 +12,7 @@
         android:layout_height="50dp">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/btn_previous"
             android:layout_width="43dp"
             android:layout_height="26dp"
             android:layout_marginBottom="8dp"
@@ -24,32 +24,33 @@
             app:srcCompat="@drawable/ic_arrow_left" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:text="Today"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_previous"
+            app:layout_constraintEnd_toStartOf="@+id/btn_next"
+            app:layout_constraintStart_toEndOf="@+id/btn_previous"
+            app:layout_constraintTop_toTopOf="@+id/btn_previous"
             app:layout_constraintVertical_bias="0.3"
             tools:text="17/05/2018" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/btn_next"
             android:layout_width="43dp"
             android:layout_height="26dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_previous"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/btn_previous"
             app:srcCompat="@drawable/ic_arrow_right" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list_tasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
@@ -59,7 +60,7 @@
         android:layout_height="50dp">
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/et_new_task"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -67,11 +68,11 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_add_task_to_list"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/MainEditText"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_add_task_to_list"
@@ -81,9 +82,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="@+id/editText2"
+            app:layout_constraintBottom_toBottomOf="@+id/et_new_task"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/editText2"
+            app:layout_constraintTop_toTopOf="@+id/et_new_task"
             app:srcCompat="@drawable/ic_playlist_add" />
     </android.support.constraint.ConstraintLayout>
 

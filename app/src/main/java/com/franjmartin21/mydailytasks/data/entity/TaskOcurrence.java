@@ -26,6 +26,8 @@ public class TaskOcurrence extends BaseEntity{
 
     private Date completedDate;
 
+    private int position;
+
     private int taskId;
 
     public TaskOcurrence(){
@@ -33,7 +35,7 @@ public class TaskOcurrence extends BaseEntity{
     }
 
     @Ignore
-    public TaskOcurrence(Date goalDate, Date completedDate, int taskId){
+    public TaskOcurrence(Date goalDate, Date completedDate, int position, int taskId){
         super();
         this.goalDate = goalDate;
         this.completedDate = completedDate;
@@ -54,6 +56,14 @@ public class TaskOcurrence extends BaseEntity{
 
     public void setCompletedDate(Date completedDate) {
         this.completedDate = completedDate;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public int getTaskId() {
