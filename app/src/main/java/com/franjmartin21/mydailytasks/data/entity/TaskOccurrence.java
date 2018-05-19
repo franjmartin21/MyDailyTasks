@@ -20,7 +20,7 @@ import java.util.Date;
             @Index("goalDate")
         }
 )
-public class TaskOcurrence extends BaseEntity{
+public class TaskOccurrence extends BaseEntity{
 
     private Date goalDate;
 
@@ -30,12 +30,12 @@ public class TaskOcurrence extends BaseEntity{
 
     private int taskId;
 
-    public TaskOcurrence(){
+    public TaskOccurrence(){
         super();
     }
 
     @Ignore
-    public TaskOcurrence(Date goalDate, Date completedDate, int position, int taskId){
+    public TaskOccurrence(Date goalDate, Date completedDate, int position, int taskId){
         super();
         this.goalDate = goalDate;
         this.completedDate = completedDate;

@@ -4,7 +4,9 @@ import android.arch.persistence.room.TypeConverters;
 
 import java.util.Date;
 
-public class TaskOcurrenceItem {
+public class TaskOccurrenceItem {
+
+    private int occurrenceId;
 
     private String title;
 
@@ -13,6 +15,14 @@ public class TaskOcurrenceItem {
     private Date completedDate;
 
     private int position;
+
+    public int getOccurrenceId() {
+        return occurrenceId;
+    }
+
+    public void setOccurrenceId(int occurrenceId) {
+        this.occurrenceId = occurrenceId;
+    }
 
     public String getTitle() {
         return title;

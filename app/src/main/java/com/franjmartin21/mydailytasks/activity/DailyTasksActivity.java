@@ -1,5 +1,6 @@
 package com.franjmartin21.mydailytasks.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,10 +16,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.franjmartin21.mydailytasks.R;
+import com.franjmartin21.mydailytasks.activity.adapter.DailyTaskAdapter;
 import com.franjmartin21.mydailytasks.data.db.MyDailyTasksDatabase;
 
 public class DailyTasksActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DailyTaskListFragment.OnItemClickedListener {
+
+    public enum RequestCode{
+        EDIT_TASK(1122);
+
+        int code;
+        RequestCode(int code){
+            this.code = code;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +53,10 @@ public class DailyTasksActivity extends AppCompatActivity
          */
 
         //Adding the fragment to the Activity
-        DailyTaskListFragment dailyTaskListFragment = DailyTaskListFragment.newInstance("abc", "cde");
+        DailyTaskListFragment dailyTaskListFragment = DailyTaskListFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.daily_task_list_fragment_container, dailyTaskListFragment)
+                .replace(R.id.daily_task_list_fragment_container, dailyTaskListFragment)
                 .commit();
 
     }
@@ -107,5 +118,11 @@ public class DailyTasksActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClicked(int itemId) {
+        Intent intent = new Intent(this, EditTaskActivity.class);
+        startActivityForResult(intent, RequestCode.EDIT_TASK.code);
     }
 }

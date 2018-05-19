@@ -1,6 +1,5 @@
 package com.franjmartin21.mydailytasks.data.dao;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -8,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.franjmartin21.mydailytasks.data.db.MyDailyTasksDatabase;
 import com.franjmartin21.mydailytasks.data.entity.Task;
-import com.franjmartin21.mydailytasks.data.entity.TaskOcurrence;
 
 import junit.framework.Assert;
 
@@ -16,9 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Date;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class TaskDaoTest {

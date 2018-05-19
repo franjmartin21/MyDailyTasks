@@ -1,26 +1,28 @@
 package com.franjmartin21.mydailytasks.activity.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.franjmartin21.mydailytasks.R;
-import com.franjmartin21.mydailytasks.data.entity.TaskOcurrenceItem;
+import com.franjmartin21.mydailytasks.data.entity.TaskOccurrenceItem;
 
 import java.util.List;
 
 public class DailyTaskAdapter extends RecyclerView.Adapter<DailyTaskAdapter.DailyTaskAdapterViewHolder> {
 
-    private List<TaskOcurrenceItem> taskOcurrenceItemList;
+    private List<TaskOccurrenceItem> taskOccurrenceItemList;
 
     private ListItemClickListener mOnClickListener;
 
-    public DailyTaskAdapter(List<TaskOcurrenceItem> taskOcurrenceItemList, ListItemClickListener listener){
-        this.taskOcurrenceItemList = taskOcurrenceItemList;
+    public DailyTaskAdapter(List<TaskOccurrenceItem> taskOccurrenceItemList, ListItemClickListener listener){
+        this.taskOccurrenceItemList = taskOccurrenceItemList;
         this.mOnClickListener = listener;
     }
 
@@ -39,25 +41,48 @@ public class DailyTaskAdapter extends RecyclerView.Adapter<DailyTaskAdapter.Dail
     @Override
     public void onBindViewHolder(DailyTaskAdapterViewHolder holder, int position) {
 
-        if(taskOcurrenceItemList.size()<=position) return;
+        if(taskOccurrenceItemList != null && taskOccurrenceItemList.size()<=position) return;
 
-        TaskOcurrenceItem taskOcurrenceItem = taskOcurrenceItemList.get(position);
-        holder.mDailyTaskTitle.setText(taskOcurrenceItem.getTitle());
+        TaskOccurrenceItem taskOccurrenceItem = taskOccurrenceItemList.get(position);
+        holder.mItemId = taskOccurrenceItem.getOccurrenceId();
+        holder.mDailyTaskTitle.setText(taskOccurrenceItem.getTitle().length() > holder.MAX_LENGHT_TITLE ? taskOccurrenceItem.getTitle().substring(0, holder.MAX_LENGHT_TITLE) + "...": taskOccurrenceItem.getTitle());
+        setItemChecked(holder, taskOccurrenceItem.getCompletedDate() != null);
+
+    }
+
+    private void setItemChecked(DailyTaskAdapterViewHolder holder, boolean isChecked){
+        if(isChecked){
+            holder.mCompleted.setChecked(true);
+            holder.mDailyTaskTitle.setPaintFlags(holder.mDailyTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else{
+            holder.mCompleted.setChecked(false);
+            holder.mDailyTaskTitle.setPaintFlags(0);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return taskOcurrenceItemList.size();
+        return taskOccurrenceItemList != null ? taskOccurrenceItemList.size():0;
     }
 
     public interface ListItemClickListener{
         void onListItemClick(int termId);
 
-        void onListItemClickCheckBox(int termId);
+        void onListItemClickCheckBox(int taskOccurrenceId, boolean isChecked);
     }
 
+    public List<TaskOccurrenceItem> getTaskOccurrenceItemList() {
+        return taskOccurrenceItemList;
+    }
+
+    public void setTaskOccurrenceItemList(List<TaskOccurrenceItem> taskOccurrenceItemList) {
+        this.taskOccurrenceItemList = taskOccurrenceItemList;
+    }
 
     class DailyTaskAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private int MAX_LENGHT_TITLE = 100;
+
         private int mItemId;
 
         private TextView mDailyTaskTitle;
@@ -66,30 +91,26 @@ public class DailyTaskAdapter extends RecyclerView.Adapter<DailyTaskAdapter.Dail
 
         public DailyTaskAdapterViewHolder(View itemView) {
             super(itemView);
+
             mDailyTaskTitle = itemView.findViewById(R.id.tv_tasktitle);
             mCompleted = itemView.findViewById(R.id.cb_completed);
-/*
-
-            itemView.setOnClickListener(this);
-            mTermDelete.setOnClickListener(new View.OnClickListener() {
+            mCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View view) {
-                    mOnClickListener.onListItemClickDelete(mTermId);
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    mOnClickListener.onListItemClickCheckBox(mItemId, isChecked);
                 }
             });
-
-            mTermEdit.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mOnClickListener.onListItemClickEdit(mTermId);
+                    mOnClickListener.onListItemClick(mItemId);
                 }
             });
-            */
         }
 
         @Override
         public void onClick(View view) {
-            //mOnClickListener.onListItemClick(mTermId);
+            mOnClickListener.onListItemClick(mItemId);
         }
     }
 }

@@ -1,9 +1,18 @@
 <resources>
     <string name="app_name">MyDailyTasks</string>
     <!-- Titles for different screens-->
+
+    <!-- DAILY TASK ACTIVITY -->
+    <!-- Title -->
     <string name="daily_task_title">Tasks</string>
+    <!-- Validations -->
+    <string name="validation_empty_new_task_text">You have to enter a text to add it to the list.</string>
 
-
+    <!-- EDIT TASK ACTIVITY -->
+    <!-- title -->
+    <string name="edit_task_title">Edit Task</string>
+    <!-- labels -->
+    <string name="hint_title_of_task">Title of task</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
