@@ -17,16 +17,23 @@ import java.util.Date;
 import java.util.List;
 
 public class TaskOccurrenceViewModel extends AndroidViewModel {
-    private TaskDao taskDao;
+
+    private Date showedDate;
 
     private TaskOccurrenceDao taskOccurrenceDao;
+
+    private TaskOccurrenceItem taskOcurrenceItem;
 
     public TaskOccurrenceViewModel(@NonNull Application application) {
         super(application);
         MyDailyTasksDatabase myDB = MyDailyTasksDatabase.getAppDatabase(application);
-        taskDao = myDB.taskDao();
         taskOccurrenceDao = myDB.taskOccurrenceDao();
+        showedDate = new Date();
+    }
 
+    public TaskOccurrenceItem getTaskOcurrence(int taskOccurrenceId){
+        taskOcurrenceItem = taskOccurrenceDao.loadTaskOccurrenceItem(taskOccurrenceId);
+        return taskOcurrenceItem;
     }
 
     public LiveData<List<TaskOccurrenceItem>> getTaskOccurrenceItemList(Date startDate, Date endDate){
@@ -37,7 +44,21 @@ public class TaskOccurrenceViewModel extends AndroidViewModel {
         return taskOccurrenceDao.loadTaskOccurrences();
     }
 
-    public LiveData<List<TaskOccurrenceItem>> getTaskOccurrenceItemList(Date date){
-        return getTaskOccurrenceItemList(UtilDate.atStartOfDay(date), UtilDate.atEndOfDay(date));
+    public LiveData<List<TaskOccurrenceItem>> getTaskOccurrenceItemList(){
+        return getTaskOccurrenceItemList(UtilDate.atStartOfDay(showedDate), UtilDate.atEndOfDay(showedDate));
     }
+
+
+    public TaskOccurrenceItem getTaskOcurrenceItem() {
+        return taskOcurrenceItem;
+    }
+
+    public Date getShowedDate() {
+        return showedDate;
+    }
+
+    public void setShowedDate(Date showedDate) {
+        this.showedDate = showedDate;
+    }
+
 }

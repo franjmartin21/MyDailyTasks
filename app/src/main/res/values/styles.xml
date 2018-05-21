@@ -30,8 +30,10 @@
         <item name="android:layout_margin">0dp</item>
     </style>
     <style name="DailyTaskListItemText">
+        <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textSize">16sp</item>
     </style>
+
 
 
 </resources>

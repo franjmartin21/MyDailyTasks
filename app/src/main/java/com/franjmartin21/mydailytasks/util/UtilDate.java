@@ -23,4 +23,11 @@ public class UtilDate {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
+
+    public static Date addDays(Date date, int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, day);
+        return calendar.getTime();
+    }
 }

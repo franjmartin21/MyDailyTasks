@@ -19,9 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.EditTaskActivity"
-                  android:label="@string/edit_task_title">
-
+        <activity   android:name=".activity.EditTaskActivity"
+                    android:label="@string/edit_task_title"
+                    android:configChanges="orientation"
+                    android:screenOrientation="portrait"
+                    android:parentActivityName=".activity.DailyTasksActivity">
         </activity>
     </application>
 

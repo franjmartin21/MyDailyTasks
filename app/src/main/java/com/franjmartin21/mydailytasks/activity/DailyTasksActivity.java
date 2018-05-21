@@ -31,11 +31,12 @@ public class DailyTasksActivity extends AppCompatActivity
         }
     }
 
+    private DailyTaskListFragment dailyTaskListFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.daily_task_title);
-        MyDailyTasksDatabase db = MyDailyTasksDatabase.getAppDatabase(this);
         setContentView(R.layout.activity_daily_tasks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,7 +54,7 @@ public class DailyTasksActivity extends AppCompatActivity
          */
 
         //Adding the fragment to the Activity
-        DailyTaskListFragment dailyTaskListFragment = DailyTaskListFragment.newInstance();
+        dailyTaskListFragment = DailyTaskListFragment.newInstance();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.daily_task_list_fragment_container, dailyTaskListFragment)
@@ -80,12 +81,11 @@ public class DailyTasksActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        if(id == R.id.action_today){
+            dailyTaskListFragment.setDate(0);
+        }
         /* todo: to enable when using settings
         if (id == R.id.action_settings) {
             return true;
@@ -123,6 +123,7 @@ public class DailyTasksActivity extends AppCompatActivity
     @Override
     public void onItemClicked(int itemId) {
         Intent intent = new Intent(this, EditTaskActivity.class);
+        intent.putExtra(EditTaskActivity.IntentExtra.TASK_OCURRENCE_ID.name(), itemId);
         startActivityForResult(intent, RequestCode.EDIT_TASK.code);
     }
 }

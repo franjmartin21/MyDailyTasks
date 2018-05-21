@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.franjmartin21.mydailytasks.data.entity.Task;
 
@@ -24,5 +25,11 @@ public interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public long insert(Task task);
+
+    @Query("DELETE FROM Task where id = :id")
+    public void deleteById(int id);
+
+    @Update
+    public void updateTask(Task task);
 
 }

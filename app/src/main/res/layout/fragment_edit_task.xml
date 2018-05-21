@@ -8,7 +8,7 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/et_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -22,62 +22,62 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_goaldate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Goal date"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintStart_toStartOf="@+id/et_title"
+        app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tv_completeddate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Completed date"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintStart_toStartOf="@+id/tv_completed"
+        app:layout_constraintTop_toBottomOf="@+id/tv_completed" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_completed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="Completed"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintStart_toStartOf="@+id/et_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_goaldate" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/et_goaldate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="50dp"
         android:ems="10"
         android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_goaldate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintStart_toEndOf="@+id/tv_goaldate"
+        app:layout_constraintTop_toTopOf="@+id/tv_goaldate" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/et_completeddate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintEnd_toEndOf="@+id/editText2"
-        app:layout_constraintStart_toStartOf="@+id/checkBox2"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_completeddate"
+        app:layout_constraintEnd_toEndOf="@+id/et_goaldate"
+        app:layout_constraintStart_toStartOf="@+id/cb_completed"
+        app:layout_constraintTop_toTopOf="@+id/tv_completeddate" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/cb_completed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="@+id/editText2"
-        app:layout_constraintTop_toTopOf="@+id/textView5" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_completed"
+        app:layout_constraintStart_toStartOf="@+id/et_goaldate"
+        app:layout_constraintTop_toTopOf="@+id/tv_completed" />
 
 </android.support.constraint.ConstraintLayout>

@@ -67,4 +67,31 @@ public class MyDailyTaskService {
             taskOccurrence.setCompletedDate(null);
         myDb.taskOccurrenceDao().insert(taskOccurrence);
     }
+
+    public void saveTaskOccurrence(final TaskOccurrenceItem taskOccurrenceItem){
+        myDb.runInTransaction(new Runnable() {
+            @Override
+            public void run() {
+                TaskOccurrence taskOccurrence = myDb.taskOccurrenceDao().loadTaskOccurrenceById(taskOccurrenceItem.getOccurrenceId());
+                Task task = myDb.taskDao().loadTask(taskOccurrence.getTaskId());
+                taskOccurrence.setCompletedDate(taskOccurrenceItem.getCompletedDate());
+                taskOccurrence.setGoalDate(taskOccurrenceItem.getGoalDate());
+                task.setTitle(taskOccurrenceItem.getTitle());
+                myDb.taskDao().updateTask(task);
+                myDb.taskOccurrenceDao().insert(taskOccurrence);
+            }
+        });
+
+    }
+
+    public void deleteTaskOccurrence(final int taskOccurrenceId){
+        myDb.runInTransaction(new Runnable() {
+            @Override
+            public void run() {
+                TaskOccurrence taskOccurrence = myDb.taskOccurrenceDao().loadTaskOccurrenceById(taskOccurrenceId);
+                myDb.taskOccurrenceDao().deleteById(taskOccurrence.getId());
+                myDb.taskDao().deleteById(taskOccurrence.getTaskId());
+            }
+        });
+    }
 }

@@ -3,16 +3,30 @@
     <!-- Titles for different screens-->
 
     <!-- DAILY TASK ACTIVITY -->
-    <!-- Title -->
+    <!-- Labels -->
     <string name="daily_task_title">Tasks</string>
+    <string name="daily_task_today_label">Today</string>
     <!-- Validations -->
     <string name="validation_empty_new_task_text">You have to enter a text to add it to the list.</string>
+    <!-- Menu -->
+    <string name="today_menu_title">Today</string>
 
     <!-- EDIT TASK ACTIVITY -->
     <!-- title -->
     <string name="edit_task_title">Edit Task</string>
     <!-- labels -->
     <string name="hint_title_of_task">Title of task</string>
+    <!-- menu -->
+    <string name="save_menu_title">Save</string>
+    <string name="delete_menu_title">Delete</string>
+
+    <!-- dialog -->
+    <string name="delete_task_message">Are you sure that you want to delete this item?</string>
+
+
+    <!-- GENERAL PARAMETERS -->
+    <string name="date_format">MM/dd/yyyy</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
