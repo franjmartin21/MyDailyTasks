@@ -1,5 +1,6 @@
 package com.franjmartin21.mydailytasks.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,11 +21,14 @@ import com.franjmartin21.mydailytasks.R;
 public class EditTaskActivity extends AppCompatActivity implements EditTaskFragment.OnFragmentInteractionListener {
 
     public enum IntentExtra {
-        TASK_OCURRENCE_ID
+        TASK_OCCURRENCE_ID,
+        TASK_OCCURRENCE_DATE
     }
 
     private View mLayout;
     private int occurrenceId;
+    private long occurrenceDate;
+
 
     private EditTaskFragment editTaskFragment;
     @Override
@@ -33,8 +38,10 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskFragm
         mLayout = findViewById(R.id.layout_edit_activity);
 
         Intent intent = getIntent();
-        if(intent.hasExtra(IntentExtra.TASK_OCURRENCE_ID.name()))
-            occurrenceId = intent.getIntExtra(IntentExtra.TASK_OCURRENCE_ID.name(), 0);
+        if(intent.hasExtra(IntentExtra.TASK_OCCURRENCE_ID.name()) && intent.hasExtra(IntentExtra.TASK_OCCURRENCE_DATE.name())) {
+            occurrenceId = intent.getIntExtra(IntentExtra.TASK_OCCURRENCE_ID.name(), 0);
+            occurrenceDate = intent.getLongExtra(IntentExtra.TASK_OCCURRENCE_DATE.name(), 0);
+        }
         else
             finish();
 
@@ -70,6 +77,14 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskFragm
             actionDelete();
             return true;
         }
+
+        if (id == android.R.id.home){
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(DailyTasksActivity.IntentExtra.GOAL_DATE_RETURNED.name(), occurrenceDate);
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -94,4 +109,5 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskFragm
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
     }
+
 }

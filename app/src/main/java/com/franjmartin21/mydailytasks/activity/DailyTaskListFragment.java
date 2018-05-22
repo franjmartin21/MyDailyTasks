@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +37,11 @@ import io.reactivex.annotations.Nullable;
 
 public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.ListItemClickListener {
 
+    private static final String ARG_DAILYTASK_LONGDATE = "param_dailytask_longdate";
+
     private MyDailyTaskService service;
 
+    private Date mCurrentDate;
     //List of components in the page
     private View mLayout;
     private TextView mDate;
@@ -57,9 +61,10 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
         // Required empty public constructor
     }
 
-    public static DailyTaskListFragment newInstance() {
+    public static DailyTaskListFragment newInstance(Long longDate) {
         DailyTaskListFragment fragment = new DailyTaskListFragment();
         Bundle args = new Bundle();
+        args.putLong(ARG_DAILYTASK_LONGDATE, longDate);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +72,10 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(DailyTaskListFragment.class.getClass().getSimpleName(), "onCreate");
+        if (getArguments() != null) {
+            mCurrentDate = new Date(getArguments().getLong(ARG_DAILYTASK_LONGDATE));
+        }
         uiUtil = UIUtil.getInstance(getActivity());
         service = MyDailyTaskService.getInstance(getActivity().getApplicationContext());
         initData();
@@ -75,6 +84,7 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(DailyTaskListFragment.class.getClass().getSimpleName(), "onCreateView");
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_daily_task_list, container, false);
         mLayout = v.findViewById(R.id.layout_daily_fragment);
@@ -93,14 +103,16 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
         mPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDate(-1);
+                mListener.onPreviousBtnClicked();
+                //setDate(-1);
             }
         });
         mNext = v.findViewById(R.id.btn_next);
         mNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDate(1);
+                mListener.onNextBtnClicked();
+                //setDate(1);
             }
         });
         informDateText();
@@ -109,31 +121,24 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
     }
 
     private void initData() {
+        Log.d(this.getClass().getSimpleName(), "initData");
         mTaskOccurrenceViewModel = ViewModelProviders.of(this).get(TaskOccurrenceViewModel.class);
         loadData();
     }
 
-    public void setDate(int days){
-        if(days == 0)
-            mTaskOccurrenceViewModel.setShowedDate(new Date());
-        else
-            mTaskOccurrenceViewModel.setShowedDate(UtilDate.addDays(mTaskOccurrenceViewModel.getShowedDate(), days));
-        //todo: how can I prevent this duplication with viewmodel??
-        informDateText();
-        loadData();
-    }
-
     private void informDateText(){
-        mDate.setText(uiUtil.getStrFromDate(mTaskOccurrenceViewModel.getShowedDate()));
+        Log.d(this.getClass().getSimpleName(), "informDateText");
+        mDate.setText(uiUtil.getStrFromDate(mCurrentDate));
         if(mDate.getText().toString().equals(uiUtil.getStrFromDate(new Date())))
             mDate.setText(getString(R.string.daily_task_today_label));
     }
 
     private void loadData(){
-        mTaskOccurrenceViewModel.getTaskOccurrenceItemList().observe(this, new Observer<List<TaskOccurrenceItem>>() {
+        mTaskOccurrenceViewModel.getTaskOccurrenceItemList(mCurrentDate).observe(this, new Observer<List<TaskOccurrenceItem>>() {
             //mTaskOccurrenceViewModel.getAllTaskOccurrences().observe(this, new Observer<List<TaskOccurrenceItem>>() {
             @Override
             public void onChanged(@Nullable List<TaskOccurrenceItem> taskOccurrenceItems) {
+                Log.d(DailyTaskListFragment.class.getClass().getSimpleName(), "onChanged");
                 mDailyTaskAdapter.setTaskOccurrenceItemList(taskOccurrenceItems);
                 mDailyTaskAdapter.notifyDataSetChanged();
             }
@@ -142,7 +147,7 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
 
     private void insertNewTask(){
         if(!mNewTaskText.getText().toString().isEmpty())
-            service.insertQuickTask(mNewTaskText.getText().toString(),mTaskOccurrenceViewModel.getShowedDate());
+            service.insertQuickTask(mNewTaskText.getText().toString(), mCurrentDate);
         else
             Snackbar.make(mLayout, getString(R.string.validation_empty_new_task_text), Snackbar.LENGTH_SHORT).show();
 
@@ -200,5 +205,9 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
     public interface OnItemClickedListener {
         // TODO: Update argument type and name
         void onItemClicked(int itemId);
+
+        void onPreviousBtnClicked();
+
+        void onNextBtnClicked();
     }
 }

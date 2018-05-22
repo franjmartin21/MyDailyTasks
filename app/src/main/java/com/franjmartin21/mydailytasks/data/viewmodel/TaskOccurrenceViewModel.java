@@ -5,11 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.franjmartin21.mydailytasks.data.dao.TaskDao;
 import com.franjmartin21.mydailytasks.data.dao.TaskOccurrenceDao;
 import com.franjmartin21.mydailytasks.data.db.MyDailyTasksDatabase;
-import com.franjmartin21.mydailytasks.data.entity.Task;
-import com.franjmartin21.mydailytasks.data.entity.TaskOccurrence;
 import com.franjmartin21.mydailytasks.data.entity.TaskOccurrenceItem;
 import com.franjmartin21.mydailytasks.util.UtilDate;
 
@@ -17,8 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 public class TaskOccurrenceViewModel extends AndroidViewModel {
-
-    private Date showedDate;
 
     private TaskOccurrenceDao taskOccurrenceDao;
 
@@ -28,7 +23,6 @@ public class TaskOccurrenceViewModel extends AndroidViewModel {
         super(application);
         MyDailyTasksDatabase myDB = MyDailyTasksDatabase.getAppDatabase(application);
         taskOccurrenceDao = myDB.taskOccurrenceDao();
-        showedDate = new Date();
     }
 
     public TaskOccurrenceItem getTaskOcurrence(int taskOccurrenceId){
@@ -44,21 +38,13 @@ public class TaskOccurrenceViewModel extends AndroidViewModel {
         return taskOccurrenceDao.loadTaskOccurrences();
     }
 
-    public LiveData<List<TaskOccurrenceItem>> getTaskOccurrenceItemList(){
-        return getTaskOccurrenceItemList(UtilDate.atStartOfDay(showedDate), UtilDate.atEndOfDay(showedDate));
+    public LiveData<List<TaskOccurrenceItem>> getTaskOccurrenceItemList(Date date){
+        return getTaskOccurrenceItemList(UtilDate.atStartOfDay(date), UtilDate.atEndOfDay(date));
     }
 
 
     public TaskOccurrenceItem getTaskOcurrenceItem() {
         return taskOcurrenceItem;
-    }
-
-    public Date getShowedDate() {
-        return showedDate;
-    }
-
-    public void setShowedDate(Date showedDate) {
-        this.showedDate = showedDate;
     }
 
 }

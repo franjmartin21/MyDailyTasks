@@ -1,7 +1,9 @@
 package com.franjmartin21.mydailytasks.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -14,13 +16,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.franjmartin21.mydailytasks.R;
 import com.franjmartin21.mydailytasks.activity.adapter.DailyTaskAdapter;
+import com.franjmartin21.mydailytasks.activity.util.UIUtil;
 import com.franjmartin21.mydailytasks.data.db.MyDailyTasksDatabase;
+import com.franjmartin21.mydailytasks.util.UtilDate;
+
+import java.util.Date;
 
 public class DailyTasksActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DailyTaskListFragment.OnItemClickedListener {
+
+    public enum SaveState{
+        CURRENT_DATE
+    }
+
+    public enum IntentExtra {
+        GOAL_DATE_RETURNED
+    }
 
     public enum RequestCode{
         EDIT_TASK(1122);
@@ -31,7 +46,11 @@ public class DailyTasksActivity extends AppCompatActivity
         }
     }
 
+
+
     private DailyTaskListFragment dailyTaskListFragment;
+
+    private Date currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +59,8 @@ public class DailyTasksActivity extends AppCompatActivity
         setContentView(R.layout.activity_daily_tasks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        currentDate = getCurrentDateForActivity(savedInstanceState);
 
         /**
          * todo: to uncomment when activate navigation
@@ -54,12 +75,27 @@ public class DailyTasksActivity extends AppCompatActivity
          */
 
         //Adding the fragment to the Activity
-        dailyTaskListFragment = DailyTaskListFragment.newInstance();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.daily_task_list_fragment_container, dailyTaskListFragment)
-                .commit();
+        loadFragment();
+    }
 
+    private Date getCurrentDateForActivity(Bundle savedInstanceState){
+        if(currentDate != null) return currentDate;
+
+        if (savedInstanceState != null && savedInstanceState.getLong(SaveState.CURRENT_DATE.name()) > 0) {
+            // Restore value of members from saved state
+            currentDate = new Date(savedInstanceState.getLong(SaveState.CURRENT_DATE.name()));
+        } else{
+            currentDate = new Date();
+        }
+        return currentDate;
+    }
+
+    private void loadFragment() {
+        dailyTaskListFragment = DailyTaskListFragment.newInstance(currentDate.getTime());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.daily_task_list_fragment_container, dailyTaskListFragment)
+                    .commit();
     }
 
     @Override
@@ -84,7 +120,8 @@ public class DailyTasksActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == R.id.action_today){
-            dailyTaskListFragment.setDate(0);
+            currentDate = new Date();
+            loadFragment();
         }
         /* todo: to enable when using settings
         if (id == R.id.action_settings) {
@@ -123,7 +160,40 @@ public class DailyTasksActivity extends AppCompatActivity
     @Override
     public void onItemClicked(int itemId) {
         Intent intent = new Intent(this, EditTaskActivity.class);
-        intent.putExtra(EditTaskActivity.IntentExtra.TASK_OCURRENCE_ID.name(), itemId);
+        intent.putExtra(EditTaskActivity.IntentExtra.TASK_OCCURRENCE_ID.name(), itemId);
+        intent.putExtra(EditTaskActivity.IntentExtra.TASK_OCCURRENCE_DATE.name(), currentDate.getTime());
         startActivityForResult(intent, RequestCode.EDIT_TASK.code);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (requestCode == RequestCode.EDIT_TASK.code) {
+            if(resultCode == Activity.RESULT_OK){
+                currentDate = new Date(data.getLongExtra(IntentExtra.GOAL_DATE_RETURNED.name(), 0L));
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
+    @Override
+    public void onPreviousBtnClicked() {
+        currentDate = UtilDate.addDays(currentDate, -1);
+        loadFragment();
+    }
+
+    @Override
+    public void onNextBtnClicked() {
+        currentDate = UtilDate.addDays(currentDate, 1);
+        loadFragment();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putLong(SaveState.CURRENT_DATE.name(), currentDate.getTime());
     }
 }
