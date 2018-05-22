@@ -2,6 +2,7 @@ package com.franjmartin21.mydailytasks.activity.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,25 +40,17 @@ public class DailyTaskAdapter extends RecyclerView.Adapter<DailyTaskAdapter.Dail
     }
 
     @Override
-    public void onBindViewHolder(DailyTaskAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(final DailyTaskAdapterViewHolder holder, int position) {
 
         if(taskOccurrenceItemList != null && taskOccurrenceItemList.size()<=position) return;
 
-        TaskOccurrenceItem taskOccurrenceItem = taskOccurrenceItemList.get(position);
-        holder.mItemId = taskOccurrenceItem.getOccurrenceId();
-        holder.mDailyTaskTitle.setText(taskOccurrenceItem.getTitle().length() > holder.MAX_LENGHT_TITLE ? taskOccurrenceItem.getTitle().substring(0, holder.MAX_LENGHT_TITLE) + "...": taskOccurrenceItem.getTitle());
-        setItemChecked(holder, taskOccurrenceItem.getCompletedDate() != null);
-
+        holder.bind(taskOccurrenceItemList.get(position), mOnClickListener);
     }
 
-    private void setItemChecked(DailyTaskAdapterViewHolder holder, boolean isChecked){
-        if(isChecked){
-            holder.mCompleted.setChecked(true);
-            holder.mDailyTaskTitle.setPaintFlags(holder.mDailyTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        } else{
-            holder.mCompleted.setChecked(false);
-            holder.mDailyTaskTitle.setPaintFlags(0);
-        }
+    @Override
+    public void onViewRecycled(@NonNull DailyTaskAdapterViewHolder holder) {
+        super.onViewRecycled(holder);
+        holder.mCompleted.setOnCheckedChangeListener(null);
     }
 
     @Override
@@ -94,21 +87,37 @@ public class DailyTaskAdapter extends RecyclerView.Adapter<DailyTaskAdapter.Dail
 
             mDailyTaskTitle = itemView.findViewById(R.id.tv_tasktitle);
             mCompleted = itemView.findViewById(R.id.cb_completed);
+        }
+
+        public void bind(final TaskOccurrenceItem taskOccurrenceItem, final ListItemClickListener listener) {
+            mItemId = taskOccurrenceItem.getOccurrenceId();
+            mDailyTaskTitle.setText(taskOccurrenceItem.getTitle().length() > MAX_LENGHT_TITLE ? taskOccurrenceItem.getTitle().substring(0, MAX_LENGHT_TITLE) + "...": taskOccurrenceItem.getTitle());
+            setItemChecked(taskOccurrenceItem.getCompletedDate() != null);
             mCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                    mOnClickListener.onListItemClickCheckBox(mItemId, isChecked);
+                    listener.onListItemClickCheckBox(mItemId, isChecked);
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    mOnClickListener.onListItemClick(mItemId);
+                public void onClick(View v) {
+                    listener.onListItemClick(mItemId);
                 }
             });
         }
 
-        @Override
+        private void setItemChecked(boolean isChecked){
+            if(isChecked){
+                mCompleted.setChecked(true);
+                mDailyTaskTitle.setPaintFlags(mDailyTaskTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else{
+                mCompleted.setChecked(false);
+                mDailyTaskTitle.setPaintFlags(0);
+            }
+        }
+
+            @Override
         public void onClick(View view) {
             mOnClickListener.onListItemClick(mItemId);
         }
