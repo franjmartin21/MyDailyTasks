@@ -10,7 +10,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        style="@style/dailyTaskListDateArea">
 
         <ImageView
             android:id="@+id/btn_previous"
@@ -36,7 +37,9 @@
             app:layout_constraintStart_toEndOf="@+id/btn_previous"
             app:layout_constraintTop_toTopOf="@+id/btn_previous"
             app:layout_constraintVertical_bias="0.3"
-            tools:text="17/05/2018" />
+            tools:text="17/05/2018"
+            style="@style/dailyTaskListDateAreaText"
+            />
 
         <ImageView
             android:id="@+id/btn_next"
@@ -50,6 +53,13 @@
             />
 
     </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorDivider" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list_tasks"

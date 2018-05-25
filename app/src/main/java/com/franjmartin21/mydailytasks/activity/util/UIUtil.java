@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class UIUtil {
 
@@ -20,7 +21,7 @@ public class UIUtil {
     private DateFormat dateFormat;
 
     private UIUtil(Context context){
-        dateFormat = new SimpleDateFormat(context.getString(R.string.date_format));
+        dateFormat = new SimpleDateFormat(context.getString(R.string.date_format_ui),new Locale(context.getString(R.string.date_locale_ui)));
     }
 
     public synchronized static UIUtil getInstance(Context context) {

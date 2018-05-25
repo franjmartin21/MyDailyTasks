@@ -25,7 +25,8 @@
 
 
     <!-- GENERAL PARAMETERS -->
-    <string name="date_format">MM/dd/yyyy</string>
+    <string name="date_format_ui">E, MMM d</string>
+    <string name="date_locale_ui">en</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

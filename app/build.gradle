@@ -6,7 +6,7 @@ android {
         applicationId "com.franjmartin21.mydailytasks"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 4
+        versionCode 5
         versionName "0.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

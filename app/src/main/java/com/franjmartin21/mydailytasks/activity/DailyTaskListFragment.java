@@ -129,8 +129,10 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
     private void informDateText(){
         Log.d(this.getClass().getSimpleName(), "informDateText");
         mDate.setText(uiUtil.getStrFromDate(mCurrentDate));
-        if(mDate.getText().toString().equals(uiUtil.getStrFromDate(new Date())))
-            mDate.setText(getString(R.string.daily_task_today_label));
+        if(mDate.getText().toString().equals(uiUtil.getStrFromDate(new Date()))) {
+            mDate.setText(getString(R.string.daily_task_today_label) + " - " + uiUtil.getStrFromDate(mCurrentDate));
+            mDate.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     private void loadData(){
