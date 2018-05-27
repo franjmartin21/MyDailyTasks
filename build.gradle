@@ -25,3 +25,15 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext{
+    supportLibraryVersion = '27.1.1'
+    constraintLayoutVersion = '1.1.0'
+    roomVersion = '1.0.0'
+    lifecycleExtensions = '1.1.1'
+    //liveDataLifecycleVersion '1.1.1'
+    //extensionsLivecycleVersion '1.1.0'
+    junitVersion = '4.12'
+    supportTestVersion = '1.0.2'
+    expressoTestVersion = '3.0.2'
+}
