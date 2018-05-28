@@ -26,7 +26,7 @@ import com.franjmartin21.mydailytasks.util.UtilDate;
 
 import java.util.Date;
 
-public class DailyTasksActivity extends AppCompatActivity
+public class DailyTasksActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, DailyTaskListFragment.OnItemClickedListener {
 
     public enum SaveState{
@@ -46,6 +46,9 @@ public class DailyTasksActivity extends AppCompatActivity
         }
     }
 
+    public enum FragmentTag{
+        DAILY_TASK_LIST
+    }
 
 
     private DailyTaskListFragment dailyTaskListFragment;
@@ -91,11 +94,11 @@ public class DailyTasksActivity extends AppCompatActivity
     }
 
     private void loadFragment() {
-        dailyTaskListFragment = DailyTaskListFragment.newInstance(currentDate.getTime());
         FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.daily_task_list_fragment_container, dailyTaskListFragment)
-                    .commit();
+        dailyTaskListFragment = DailyTaskListFragment.newInstance(currentDate.getTime());
+
+        addFragmentToActivity(fragmentManager,dailyTaskListFragment,R.id.daily_task_list_fragment_container,FragmentTag.DAILY_TASK_LIST.name()
+        );
     }
 
     @Override

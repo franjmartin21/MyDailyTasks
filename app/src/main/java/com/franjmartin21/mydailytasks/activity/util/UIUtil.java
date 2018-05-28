@@ -53,7 +53,7 @@ public class UIUtil {
         return dateFormat.format(date);
     }
 
-    public Date getStrFromDate(String dateStr){
+    public Date getDateFromStr(String dateStr){
         Date dateReturn = null;
         try{
             dateReturn = dateFormat.parse(dateStr);

@@ -3,6 +3,7 @@
     package="com.franjmartin21.mydailytasks">
 
     <application
+        android:name=".MyDailyTasksApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

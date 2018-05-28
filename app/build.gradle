@@ -43,6 +43,9 @@ dependencies {
     implementation "android.arch.lifecycle:livedata:$rootProject.lifecycleExtensions"
     implementation "android.arch.lifecycle:extensions:$rootProject.lifecycleExtensions"
     implementation "android.arch.lifecycle:viewmodel:$rootProject.lifecycleExtensions"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
 
     testImplementation "junit:junit:$rootProject.junitVersion"

@@ -16,23 +16,22 @@ import java.util.List;
 @Dao
 public interface TaskOccurrenceDao {
 
-    @Query("SELECT o.id occurrenceId, title title, o.completedDate completedDate, o.goalDate goalDate, o.position FROM Task t, TaskOccurrence o WHERE t.id = o.taskId and goalDate between :startDate and :endDate")
+    @Query("SELECT t.id taskId, o.id occurrenceId, title title, o.completedDate completedDate, o.goalDate goalDate, o.position FROM Task t, TaskOccurrence o WHERE t.id = o.taskId and goalDate between :startDate and :endDate")
     public LiveData<List<TaskOccurrenceItem>> loadTaskOccurrencesForDateRange(Date startDate, Date endDate);
 
-    @Query("SELECT o.id occurrenceId, t.title title, o.completedDate completedDate, o.goalDate goalDate, o.position FROM Task t, TaskOccurrence o WHERE t.id = o.taskId")
+    @Query("SELECT t.id taskId, o.id occurrenceId, t.title title, o.completedDate completedDate, o.goalDate goalDate, o.position FROM Task t, TaskOccurrence o WHERE t.id = o.taskId")
     public LiveData<List<TaskOccurrenceItem>> loadTaskOccurrences();
 
-    @Query("SELECT o.id occurrenceId, t.title title, o.completedDate completedDate, o.goalDate goalDate, o.position FROM Task t, TaskOccurrence o WHERE t.id = o.taskId and o.taskId = :taskId")
-    public TaskOccurrenceItem loadTaskOccurrenceItem(int taskId);
+    @Query("SELECT t.id taskId, o.id occurrenceId, t.title title, o.completedDate completedDate, o.goalDate goalDate, o.position FROM Task t, TaskOccurrence o WHERE t.id = o.taskId and o.id= :taskOccurrenceId")
+    public TaskOccurrenceItem loadTaskOccurrenceItem(int taskOccurrenceId);
 
     @Query("SELECT * FROM TaskOccurrence where id = :id")
     public TaskOccurrence loadTaskOccurrenceById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insert(TaskOccurrence taskOccurrence);
+    public long insert(TaskOccurrence taskOccurrence);
 
     @Query("DELETE FROM TaskOccurrence where id = :id")
     public void deleteById(int id);
-
 
 }

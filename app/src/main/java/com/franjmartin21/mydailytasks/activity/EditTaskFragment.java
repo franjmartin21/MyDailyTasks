@@ -1,5 +1,6 @@
 package com.franjmartin21.mydailytasks.activity;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.net.Uri;
@@ -11,26 +12,27 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.franjmartin21.mydailytasks.MyDailyTasksApplication;
 import com.franjmartin21.mydailytasks.R;
 import com.franjmartin21.mydailytasks.activity.util.UIUtil;
 import com.franjmartin21.mydailytasks.data.entity.TaskOccurrenceItem;
-import com.franjmartin21.mydailytasks.data.viewmodel.TaskOccurrenceViewModel;
-import com.franjmartin21.mydailytasks.service.MyDailyTaskService;
+import com.franjmartin21.mydailytasks.data.viewmodel.TaskOccurrenceListViewModel;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
+import io.reactivex.annotations.Nullable;
+
 public class EditTaskFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_TASKOCCURRENCE_ID = "param_task_occurrence";
-    //private static final String ARG_PARAM2 = "param2";
 
-    private MyDailyTaskService service;
-
+    //Mantains reference to the current taskOccurrence id that we are editing
     private int mTaskOccurrenceId;
 
+    //Visual components of the Fragment
     private EditText mTitle;
 
     private EditText mGoalDate;
@@ -39,11 +41,14 @@ public class EditTaskFragment extends Fragment {
 
     private CheckBox mCompleted;
 
+    //
     private OnFragmentInteractionListener mListener;
 
     private UIUtil uiUtil;
 
-    private TaskOccurrenceViewModel mTaskOccurrenceViewModel;
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+    private TaskOccurrenceListViewModel mTaskOccurrenceListViewModel;
 
     public EditTaskFragment() {
         // Required empty public constructor
@@ -56,7 +61,6 @@ public class EditTaskFragment extends Fragment {
      * @param taskOccurrenceId
      * @return A new instance of fragment EditTaskFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static EditTaskFragment newInstance(int taskOccurrenceId) {
         EditTaskFragment fragment = new EditTaskFragment();
         Bundle args = new Bundle();
@@ -66,15 +70,23 @@ public class EditTaskFragment extends Fragment {
         return fragment;
     }
 
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mTaskOccurrenceListViewModel = ViewModelProviders.of(this, viewModelFactory).get(TaskOccurrenceListViewModel.class);
+        loadData();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        service = MyDailyTaskService.getInstance(getActivity().getApplicationContext());
         if (getArguments() != null) {
             mTaskOccurrenceId = getArguments().getInt(ARG_TASKOCCURRENCE_ID);
         }
+        ((MyDailyTasksApplication)getActivity().getApplication()).getApplicationComponent().inject(this);
         uiUtil = UIUtil.getInstance(getActivity());
-        mTaskOccurrenceViewModel = ViewModelProviders.of(this).get(TaskOccurrenceViewModel.class);
     }
 
     @Override
@@ -116,7 +128,6 @@ public class EditTaskFragment extends Fragment {
                 changeCompleted(isChecked);
             }
         });
-        loadData();
         return v;
     }
 
@@ -131,7 +142,7 @@ public class EditTaskFragment extends Fragment {
     }
 
     private void loadData(){
-        TaskOccurrenceItem taskOccurrenceItem = mTaskOccurrenceViewModel.getTaskOcurrence(mTaskOccurrenceId);
+        TaskOccurrenceItem taskOccurrenceItem = mTaskOccurrenceListViewModel.getTaskOccurrence(mTaskOccurrenceId);
         mTitle.setText(taskOccurrenceItem.getTitle());
         mGoalDate.setText(uiUtil.getStrFromDate(taskOccurrenceItem.getGoalDate()));
         if(taskOccurrenceItem.getCompletedDate() != null){
@@ -142,16 +153,16 @@ public class EditTaskFragment extends Fragment {
     }
 
     public void save(){
-        TaskOccurrenceItem taskOccurrenceItem = mTaskOccurrenceViewModel.getTaskOcurrenceItem();
+        TaskOccurrenceItem taskOccurrenceItem = mTaskOccurrenceListViewModel.getTaskOccurrence(mTaskOccurrenceId);
         taskOccurrenceItem.setTitle(mTitle.getText().toString());
-        taskOccurrenceItem.setCompletedDate(uiUtil.getStrFromDate(mCompletedDate.getText().toString()));
-        taskOccurrenceItem.setGoalDate(uiUtil.getStrFromDate(mGoalDate.getText().toString()));
-        service.saveTaskOccurrence(taskOccurrenceItem);
+        taskOccurrenceItem.setCompletedDate(uiUtil.getDateFromStr(mCompletedDate.getText().toString()));
+        taskOccurrenceItem.setGoalDate(uiUtil.getDateFromStr(mGoalDate.getText().toString()));
+        mTaskOccurrenceListViewModel.updateTaskOccurrence(taskOccurrenceItem);
     }
 
 
     public void delete() {
-        service.deleteTaskOccurrence(mTaskOccurrenceId);
+        mTaskOccurrenceListViewModel.deleteTaskOccurrence(mTaskOccurrenceId);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -176,14 +187,6 @@ public class EditTaskFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mTaskOccurrenceViewModel.getTaskOcurrenceItem().setTitle(savedInstanceState.getCharSequence("title").toString());
-        }
     }
 
     @Override

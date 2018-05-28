@@ -6,6 +6,8 @@ import java.util.Date;
 
 public class TaskOccurrenceItem {
 
+    private int taskId;
+
     private int occurrenceId;
 
     private String title;
@@ -15,6 +17,14 @@ public class TaskOccurrenceItem {
     private Date completedDate;
 
     private int position;
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
 
     public int getOccurrenceId() {
         return occurrenceId;

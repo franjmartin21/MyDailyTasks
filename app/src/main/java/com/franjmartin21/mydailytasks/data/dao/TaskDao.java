@@ -18,11 +18,6 @@ public interface TaskDao {
     @Query("SELECT * FROM Task where id = :id")
     public Task loadTask(int id);
 
-    /**
-    @Query("SELECT * FROM Task where id in (:ids)")
-    public List<Task> loadTasks(int... ids);
-     */
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public long insert(Task task);
 

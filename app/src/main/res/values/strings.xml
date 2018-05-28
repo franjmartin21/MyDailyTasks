@@ -25,7 +25,7 @@
 
 
     <!-- GENERAL PARAMETERS -->
-    <string name="date_format_ui">E, MMM d</string>
+    <string name="date_format_ui">E, MMM d, yyyy</string>
     <string name="date_locale_ui">en</string>
 
 

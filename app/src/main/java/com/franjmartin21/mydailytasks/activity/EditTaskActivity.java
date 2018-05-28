@@ -18,17 +18,20 @@ import android.view.View;
 
 import com.franjmartin21.mydailytasks.R;
 
-public class EditTaskActivity extends AppCompatActivity implements EditTaskFragment.OnFragmentInteractionListener {
+public class EditTaskActivity extends BaseActivity implements EditTaskFragment.OnFragmentInteractionListener {
 
     public enum IntentExtra {
         TASK_OCCURRENCE_ID,
         TASK_OCCURRENCE_DATE
     }
 
+    private enum FragmentTag{
+        EDIT_TASK
+    }
+
     private View mLayout;
     private int occurrenceId;
     private long occurrenceDate;
-
 
     private EditTaskFragment editTaskFragment;
     @Override
@@ -38,18 +41,18 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskFragm
         mLayout = findViewById(R.id.layout_edit_activity);
 
         Intent intent = getIntent();
-        if(intent.hasExtra(IntentExtra.TASK_OCCURRENCE_ID.name()) && intent.hasExtra(IntentExtra.TASK_OCCURRENCE_DATE.name())) {
+        if (intent.hasExtra(IntentExtra.TASK_OCCURRENCE_ID.name()) && intent.hasExtra(IntentExtra.TASK_OCCURRENCE_DATE.name())) {
             occurrenceId = intent.getIntExtra(IntentExtra.TASK_OCCURRENCE_ID.name(), 0);
             occurrenceDate = intent.getLongExtra(IntentExtra.TASK_OCCURRENCE_DATE.name(), 0);
-        }
-        else
+        } else
             finish();
 
-        editTaskFragment = EditTaskFragment.newInstance(occurrenceId);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.edit_task_fragment_container, editTaskFragment)
-                .commit();
+        editTaskFragment = (EditTaskFragment) fragmentManager.findFragmentByTag(FragmentTag.EDIT_TASK.name());
+        if (editTaskFragment == null) {
+            editTaskFragment = EditTaskFragment.newInstance(occurrenceId);
+        }
+        addFragmentToActivity(fragmentManager, editTaskFragment, R.id.edit_task_fragment_container, FragmentTag.EDIT_TASK.name());
     }
 
     @Override
@@ -109,5 +112,4 @@ public class EditTaskActivity extends AppCompatActivity implements EditTaskFragm
                 .setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
     }
-
 }
