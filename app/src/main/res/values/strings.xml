@@ -6,6 +6,7 @@
     <!-- Labels -->
     <string name="daily_task_title">Tasks</string>
     <string name="daily_task_today_label">Today</string>
+    <string name="daily_task_quick_tasks_hint">Add quick task...</string>
     <!-- Validations -->
     <string name="validation_empty_new_task_text">You have to enter a text to add it to the list.</string>
     <!-- Menu -->

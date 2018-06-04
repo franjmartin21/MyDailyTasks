@@ -19,6 +19,7 @@ public class CustomViewModelFactory implements ViewModelProvider.Factory{
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if(modelClass.isAssignableFrom(TaskOccurrenceListViewModel.class))
             return (T) new TaskOccurrenceListViewModel(repository);
+
         else
             throw new IllegalArgumentException("ViewModel not found");
     }

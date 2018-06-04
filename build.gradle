@@ -37,4 +37,5 @@ ext{
     junitVersion = '4.12'
     supportTestVersion = '1.0.2'
     expressoTestVersion = '3.0.2'
+    mockitoVersion = '2.18.3'
 }

@@ -27,8 +27,17 @@ import io.reactivex.annotations.Nullable;
 
 public class EditTaskFragment extends Fragment {
 
+    public enum Mode{
+        ADD,
+        EDIT
+    }
+
+    private static final String ARG_MODE = "param_mode";
     private static final String ARG_TASKOCCURRENCE_ID = "param_task_occurrence";
 
+
+    //It sets the mode of the current screen
+    private Mode mode;
     //Mantains reference to the current taskOccurrence id that we are editing
     private int mTaskOccurrenceId;
 
@@ -41,7 +50,6 @@ public class EditTaskFragment extends Fragment {
 
     private CheckBox mCompleted;
 
-    //
     private OnFragmentInteractionListener mListener;
 
     private UIUtil uiUtil;
@@ -61,11 +69,11 @@ public class EditTaskFragment extends Fragment {
      * @param taskOccurrenceId
      * @return A new instance of fragment EditTaskFragment.
      */
-    public static EditTaskFragment newInstance(int taskOccurrenceId) {
+    public static EditTaskFragment newInstance(String mode, int taskOccurrenceId) {
         EditTaskFragment fragment = new EditTaskFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TASKOCCURRENCE_ID, taskOccurrenceId);
-        //args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_MODE, mode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,6 +91,7 @@ public class EditTaskFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mode = Mode.valueOf(getArguments().getString(ARG_MODE));
             mTaskOccurrenceId = getArguments().getInt(ARG_TASKOCCURRENCE_ID);
         }
         ((MyDailyTasksApplication)getActivity().getApplication()).getApplicationComponent().inject(this);

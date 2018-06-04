@@ -20,6 +20,8 @@ public class RoomModule {
 
     private final MyDailyTasksDatabase database;
 
+
+
     public RoomModule(Application application){
         this.database = Room.databaseBuilder(application, MyDailyTasksDatabase.class, "mydailytask-db")
                 .allowMainThreadQueries()

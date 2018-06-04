@@ -22,7 +22,8 @@ public class EditTaskActivity extends BaseActivity implements EditTaskFragment.O
 
     public enum IntentExtra {
         TASK_OCCURRENCE_ID,
-        TASK_OCCURRENCE_DATE
+        TASK_OCCURRENCE_DATE,
+        TASK_ACTIVITY_TYPE
     }
 
     private enum FragmentTag{
@@ -41,7 +42,7 @@ public class EditTaskActivity extends BaseActivity implements EditTaskFragment.O
         mLayout = findViewById(R.id.layout_edit_activity);
 
         Intent intent = getIntent();
-        if (intent.hasExtra(IntentExtra.TASK_OCCURRENCE_ID.name()) && intent.hasExtra(IntentExtra.TASK_OCCURRENCE_DATE.name())) {
+        if (intent.hasExtra(IntentExtra.TASK_ACTIVITY_TYPE.name()) && intent.hasExtra(IntentExtra.TASK_OCCURRENCE_ID.name()) && intent.hasExtra(IntentExtra.TASK_OCCURRENCE_DATE.name())) {
             occurrenceId = intent.getIntExtra(IntentExtra.TASK_OCCURRENCE_ID.name(), 0);
             occurrenceDate = intent.getLongExtra(IntentExtra.TASK_OCCURRENCE_DATE.name(), 0);
         } else
@@ -50,7 +51,7 @@ public class EditTaskActivity extends BaseActivity implements EditTaskFragment.O
         FragmentManager fragmentManager = getSupportFragmentManager();
         editTaskFragment = (EditTaskFragment) fragmentManager.findFragmentByTag(FragmentTag.EDIT_TASK.name());
         if (editTaskFragment == null) {
-            editTaskFragment = EditTaskFragment.newInstance(occurrenceId);
+            editTaskFragment = EditTaskFragment.newInstance(null, occurrenceId);
         }
         addFragmentToActivity(fragmentManager, editTaskFragment, R.id.edit_task_fragment_container, FragmentTag.EDIT_TASK.name());
     }

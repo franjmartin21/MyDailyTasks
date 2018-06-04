@@ -195,8 +195,16 @@ public class DailyTasksActivity extends BaseActivity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onAddTaskClicked() {
+        Intent intent = new Intent(this, EditTaskActivity.class);
+        intent.putExtra(EditTaskActivity.IntentExtra.TASK_OCCURRENCE_DATE.name(), currentDate.getTime());
+        startActivityForResult(intent, RequestCode.EDIT_TASK.code);
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putLong(SaveState.CURRENT_DATE.name(), currentDate.getTime());
     }
 }

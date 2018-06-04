@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,11 +99,27 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
         mDate = v.findViewById(R.id.tv_date);
         mListTasks = v.findViewById(R.id.rv_list_tasks);
         mNewTaskText = v.findViewById(R.id.et_new_task);
+        mNewTaskText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mTaskOccurrenceListViewModel.setInsertType(s.length() > 0? TaskOccurrenceListViewModel.InsertType.QUICK: TaskOccurrenceListViewModel.InsertType.REGULAR);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
         mAddTaskToList = v.findViewById(R.id.btn_add_task_to_list);
         mAddTaskToList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertNewTask();
+                if(mTaskOccurrenceListViewModel.getInsertType().getValue() == TaskOccurrenceListViewModel.InsertType.QUICK)
+                    insertNewTask();
+                else
+                    mListener.onAddTaskClicked();
             }
         });
 
@@ -126,6 +144,14 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
         return v;
     }
 
+    private void changeSendButtonAction(TaskOccurrenceListViewModel.InsertType insertType){
+        if(insertType == TaskOccurrenceListViewModel.InsertType.QUICK){
+            mAddTaskToList.setImageResource(R.drawable.ic_send_white);
+        } else{
+            mAddTaskToList.setImageResource(R.drawable.ic_playlist_add);
+        }
+    }
+
     private void informDateText(){
         Log.d(this.getClass().getSimpleName(), "informDateText");
         mDate.setText(uiUtil.getStrFromDate(mCurrentDate));
@@ -143,6 +169,12 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
                 Log.d(DailyTaskListFragment.class.getClass().getSimpleName(), "onChanged");
                 mDailyTaskAdapter.setTaskOccurrenceItemList(taskOccurrenceItems);
                 mDailyTaskAdapter.notifyDataSetChanged();
+            }
+        });
+        mTaskOccurrenceListViewModel.getInsertType().observe(this, new Observer<TaskOccurrenceListViewModel.InsertType>() {
+            @Override
+            public void onChanged(@Nullable TaskOccurrenceListViewModel.InsertType insertType) {
+                changeSendButtonAction(insertType);
             }
         });
     }
@@ -216,5 +248,7 @@ public class DailyTaskListFragment extends Fragment implements DailyTaskAdapter.
         void onPreviousBtnClicked();
 
         void onNextBtnClicked();
+
+        void onAddTaskClicked();
     }
 }
